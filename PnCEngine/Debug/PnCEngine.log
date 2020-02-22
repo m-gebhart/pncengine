@@ -1,0 +1,19 @@
+﻿  editor.cpp
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(14): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(92): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  eentity.cpp
+  esprite.cpp
+  main.cpp
+  xml_base.cpp
+c:\users\micha\source\repos\pncengine\pncengine\xml_base.cpp(27): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\micha\source\repos\pncengine\pncengine\xml_base.cpp(26): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Generating Code...
+  PnCEngine.vcxproj -> C:\Users\micha\source\repos\PnCEngine\Debug\PnCEngine.exe
