@@ -1,19 +1,36 @@
 ﻿  editor.cpp
-c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(14): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(92): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  eentity.cpp
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(15): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+  entity.cpp
+c:\users\micha\source\repos\pncengine\pncengine\entity.cpp(7): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\micha\source\repos\pncengine\pncengine\entity.cpp(57): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\source\repos\pncengine\pncengine\entity.cpp(78): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  eplayer.cpp
+c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(36): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(38): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(41): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(43): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+  escene.cpp
   esprite.cpp
   main.cpp
-  xml_base.cpp
-c:\users\micha\source\repos\pncengine\pncengine\xml_base.cpp(27): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\users\micha\source\repos\pncengine\pncengine\xml_base.cpp(26): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
   Generating Code...
   PnCEngine.vcxproj -> C:\Users\micha\source\repos\PnCEngine\Debug\PnCEngine.exe

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <game title="Point and Click Adventure Game" width="1920" height="1080" fps="24" entryScene="1">
   <assets path="/assets">
-    <player id="player" src="player_default.png" position="100"/>
+    <player id="player" src="player_default.png" speed="5, 3" origin="50, 50" position="200, 200">
+      <animations>
+        <idle/>
+        <left path="/walking" />
+        <right/>
+      </animations>
+    </player>
     <sprite id="background" src="background.png"/>
-    <sprite id="character" src="player_default.png"/>
-    <sound id="boxSound" src="box01.mp3"/>
+    <sprite id="character" src="npc1.png" position="500, 20" scale="0.5, 1"/>
+    <audio id="boxSound" src="box01.mp3"/>
   </assets>
   <scenes>
-    <scene sceneId="1">
-      <character onClick ="boxSound" position="500, 1000"/>
-      <background position="0, 20"/>
+    <scene sceneId="1" >
+      <character onClick="boxSound"/>
+      <player/>
+      <background/>
     </scene>
     <scene sceneId="2">
       <background position="200"/>

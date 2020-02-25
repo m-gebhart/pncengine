@@ -1,4 +1,6 @@
-#pragma once
+#ifndef XML_BASE_H
+#define XML_BASE_H
+
 #include "rapidxml.hpp"
 #include <fstream>
 #include <iostream>
@@ -7,8 +9,11 @@
 #include <SFML/Audio.hpp>
 
 struct XML_Base {
-	rapidxml::xml_node<>* FindChildNode(rapidxml::xml_node<>* ptr_node, const char* name);
-	rapidxml::xml_attribute<>* GetAttribute(rapidxml::xml_node<>* ptr_node, const char* name);
-	sf::Vector2f GetAttributeVectorValue(rapidxml::xml_node<>* ptr_node, const char* name);
-	char* GetAttributeValue(rapidxml::xml_node<>* ptr_node, const char* name);
+	static rapidxml::xml_node<>* FindChildNode(rapidxml::xml_node<>* pNode, const char* name);
+	static rapidxml::xml_attribute<>* GetAttribute(rapidxml::xml_node<>* pNode, const char* name);
+	static sf::Vector2i GetAttributeVector2iValue(rapidxml::xml_node<>* pNode, const char* name);
+	static sf::Vector2f GetAttributeVector2fValue(rapidxml::xml_node<>* pNode, const char* name);
+	static std::string GetStringVectorValue(rapidxml::xml_node<>* pNode, const char* name);
+	static char* GetAttributeValue(rapidxml::xml_node<>* pNode, const char* name);
 };
+#endif

@@ -147,17 +147,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="editor.cpp" />
-    <ClCompile Include="eentity.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="eplayer.cpp" />
+    <ClCompile Include="escene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="esprite.cpp" />
     <ClCompile Include="xml_base.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EAudio.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="EEntity.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="EPlayer.h" />
+    <ClInclude Include="EScene.h" />
     <ClInclude Include="ESprite.h" />
     <ClInclude Include="XML_Base.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="game.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

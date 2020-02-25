@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include "ESprite.h"
+#include "EScene.h"
 
 std::string Editor::assetPath = "";
 int Editor::activeSceneId = 0;
@@ -32,9 +33,9 @@ void Editor::LoadFile(const char file[]) {
 
 void Editor::SetWindow() {
 	rapidxml::xml_node<>* currentNode = pRootNode;
-	pWindow->setSize(sf::Vector2u(atoi(GetAttribute(currentNode, "width")->value()), atoi(GetAttribute(currentNode, "height")->value())));
-	pWindow->setTitle(GetAttribute(currentNode, "title")->value());
-	pWindow->setFramerateLimit(atoi(GetAttribute(currentNode, "fps")->value()));
+	pWindow->setSize(sf::Vector2u(atoi(GetAttributeValue(currentNode, "width")), atoi(GetAttributeValue(currentNode, "height"))));
+	pWindow->setTitle(GetAttributeValue(currentNode, "title"));
+	pWindow->setFramerateLimit(atoi(GetAttributeValue(currentNode, "fps")));
 }
 
 void Editor::LoadAssets() {
@@ -47,9 +48,9 @@ void Editor::LoadAssets() {
 	for (rapidxml::xml_node<>* assetNode = pAssetsLibrary->first_node(); assetNode != NULL; assetNode = assetNode->next_sibling())
 		if (strcmp(assetNode->name(), "sprite")==0)
 			LoadSprite(assetNode);
-		else if (strcmp(assetNode->name(), "player"))
+		else if (strcmp(assetNode->name(), "player")==0)
 			LoadPlayer(assetNode);
-		else if (strcmp(assetNode->name(), "audio"))
+		else if (strcmp(assetNode->name(), "audio")==0)
 			LoadAudio(assetNode);
 }
 
@@ -58,51 +59,42 @@ void Editor::LoadSprite(rapidxml::xml_node<>* spriteNode) {
 	spriteAssets.push_back(newSprite);
 }
 
-void Editor::LoadPlayer(rapidxml::xml_node<>* spriteNode) {}
+void Editor::LoadPlayer(rapidxml::xml_node<>* spriteNode) {
+	pPlayer = new EPlayer(spriteNode);
+}
+
 void Editor::LoadAudio(rapidxml::xml_node<>* spriteNode) {}
 
 
 void Editor::LoadScene(int sceneId) {
 	pActiveSceneNode = Editor::GetActiveScene(sceneId);
-	//loading assets from "bottom up" to maintain layering hierarchy
+	pActiveScene = new EScene(pActiveSceneNode);
+	//loading assets to scene from "bottom up", according to scene's layering hierarchy
 	for (rapidxml::xml_node<>* sceneAssetNode = pActiveSceneNode->last_node(); sceneAssetNode != NULL; sceneAssetNode = sceneAssetNode->previous_sibling())
-		if (strcmp(sceneAssetNode->name(), "player") != 0)
-			Editor::SetSpriteData(sceneAssetNode);
-		else
+		if (strcmp(sceneAssetNode->name(), "player") == 0)
 			Editor::SetPlayerData();
+		else
+			Editor::SetSpriteData(sceneAssetNode);
 }
 
-//for every asset, the data from the scene will be applied
 void Editor::SetSpriteData(rapidxml::xml_node<>* sceneAssetNode) {
-	const char* assetId = sceneAssetNode->name();
+	const char* assetName = sceneAssetNode->name();
 
+	//for every asset, the data from the scene will be applied
 	for (auto &asset : Editor::spriteAssets) {
-		if (strcmp(asset->assetId, assetId) == 0) {
-			if (Editor::GetAttribute(sceneAssetNode, "position") != NULL) {
-				asset->pos = GetAttributeVectorValue(sceneAssetNode, "position");
-				asset->pSprite->setPosition(asset->pos.x, asset->pos.y);
-			}
-
-			if (Editor::GetAttribute(sceneAssetNode, "scale") != NULL) {
-				asset->scale = GetAttributeVectorValue(sceneAssetNode, "scale");
-				asset->pSprite->setScale(asset->scale.x, asset->scale.y);
-			}
-
-			if (Editor::GetAttribute(sceneAssetNode, "rotation") != NULL) {
-				asset->rot = atoi(GetAttributeValue(sceneAssetNode, "rotation"));
-				asset->pSprite->setRotation(asset->rot);
-			}
-
-			sceneSpriteAssets.push_back(asset);
+		if (strcmp(asset->assetId, assetName) == 0) {
+			asset->UpdateAssetData(sceneAssetNode);
+			pActiveScene->activeSceneAssets.push_back(asset);
 		}
 	}
-
 }
 
-void Editor::SetPlayerData() {}
+void Editor::SetPlayerData() {
+	pActiveScene->activeSceneAssets.push_back(pPlayer->pPlayerSprite);
+}
 
 void Editor::DrawOnWindow(){
-	for (auto &asset : Editor::sceneSpriteAssets) {
+	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
 		pWindow->draw(*asset->ESprite::pSprite);
 	}
 }

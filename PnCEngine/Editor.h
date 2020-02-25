@@ -1,7 +1,10 @@
-#pragma once
+#ifndef EDITOR_H
+#define EDITOR_H
 
-#include "ESprite.h"
 #include "XML_Base.h"
+#include "ESprite.h"
+#include "EPlayer.h"
+#include "EScene.h"
 
 class Editor : public XML_Base {
 private:
@@ -13,9 +16,10 @@ private:
 public:
 	sf::RenderWindow* pWindow;
 	std::vector<ESprite*> spriteAssets;
-	std::vector<ESprite*> sceneSpriteAssets;
 	static std::string assetPath;
 	static int activeSceneId;
+	EScene* pActiveScene;
+	EPlayer* pPlayer;
 
 public:
 	Editor();
@@ -33,3 +37,4 @@ public:
 	void SetPlayerData();
 	void DrawOnWindow();
 };
+#endif

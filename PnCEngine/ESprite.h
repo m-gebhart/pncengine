@@ -1,13 +1,11 @@
-#pragma once
-#include "EEntity.h"
+#ifndef ESPRITE_H
+#define ESPRITE_H
 
-class ESprite : public EEntity {
+#include "Entity.h"
+
+class ESprite : public Entity {
 public:
-	const char* assetId;
-	std::string src;
-	sf::Sprite* pSprite;
-	sf::Texture* pTexture;
-
 	ESprite();
 	ESprite(rapidxml::xml_node<>* spriteNode);
 };
+#endif
