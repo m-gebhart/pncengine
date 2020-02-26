@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<game title="Point and Click Adventure Game" width="1920" height="1080" fps="24" entryScene="1">
+<game title="Point and Click Adventure Game" width="1920" height="1080" fps="48" entryScene="1">
   <assets path="/assets">
-    <player id="player" src="player_default.png" speed="5, 3" origin="50, 50" position="200, 200">
+    <player id="player" src="player_default.png" speed="5" origin="50, 50" position="200, 200">
       <animations>
         <idle/>
         <left path="/walking" />
@@ -13,9 +13,9 @@
     <audio id="boxSound" src="box01.mp3"/>
   </assets>
   <scenes>
-    <scene sceneId="1" >
-      <character onClick="boxSound"/>
-      <player/>
+    <scene sceneId="1" lowerLevelLimit="500">
+      <character onClick="boxSound" position="700, 400"/>
+      <player position="20, 1000"/>
       <background/>
     </scene>
     <scene sceneId="2">

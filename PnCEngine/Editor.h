@@ -18,6 +18,9 @@ public:
 	std::vector<ESprite*> spriteAssets;
 	static std::string assetPath;
 	static int activeSceneId;
+	static int fps;
+	static int width;
+	static int height;
 	EScene* pActiveScene;
 	EPlayer* pPlayer;
 
@@ -34,7 +37,7 @@ public:
 	rapidxml::xml_node<>* GetActiveScene(int sceneId);
 	void LoadScene(int scene);
 	void SetSpriteData(rapidxml::xml_node<>* asset);
-	void SetPlayerData();
+	void SetPlayerData(rapidxml::xml_node<>* playerAsset);
 	void DrawOnWindow();
 };
 #endif

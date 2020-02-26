@@ -10,11 +10,19 @@ EScene::EScene(rapidxml::xml_node<>* spriteNode) {
 
 void EScene::ApplySceneData(rapidxml::xml_node<>* sceneNode) {
 	if (Editor::GetAttribute(sceneNode, "leftLevelLimit") != NULL)
-		moveLimit[0] = atoi(Editor::GetAttributeValue(sceneNode, "leftLevelLimit"));
+		moveLevelLimit[0] = atoi(Editor::GetAttributeValue(sceneNode, "leftLevelLimit"));
+	else
+		moveLevelLimit[0] = 0;
 	if (Editor::GetAttribute(sceneNode, "upperLevelLimit") != NULL)
-		moveLimit[1] = atoi(Editor::GetAttributeValue(sceneNode, "upperLevelLimit"));
+		moveLevelLimit[1] = atoi(Editor::GetAttributeValue(sceneNode, "upperLevelLimit"));
+	else
+		moveLevelLimit[1] = 0;
 	if (Editor::GetAttribute(sceneNode, "righttLevelLimit") != NULL)
-		moveLimit[2] = atoi(Editor::GetAttributeValue(sceneNode, "rightLevelLimit"));
+		moveLevelLimit[2] = atoi(Editor::GetAttributeValue(sceneNode, "rightLevelLimit"));
+	else
+		moveLevelLimit[2] = Editor::width;
 	if (Editor::GetAttribute(sceneNode, "lowerLevelLimit") != NULL)
-		moveLimit[3] = atoi(Editor::GetAttributeValue(sceneNode, "lowerLevelLimit"));
+		moveLevelLimit[3] = atoi(Editor::GetAttributeValue(sceneNode, "lowerLevelLimit"));
+	else
+		moveLevelLimit[3] = Editor::height;
 }

@@ -8,22 +8,44 @@ EPlayer::EPlayer(rapidxml::xml_node<>* playerNode) {
 	ApplyDefaultPlayerData(playerNode);
 }
 
-void EPlayer::SetTargetPosition(sf::Vector2i newPos) {
-	targetPos = newPos;
-	//pPlayerSprite->pSprite->setPosition(targetPos.x, targetPos.y);
-	moving = true;
+void EPlayer::ApplyDefaultPlayerData(rapidxml::xml_node<>* spriteNode) {
+	//applying default values from player node in assets
+	if (Editor::GetAttribute(spriteNode, "speed") == NULL)
+		movementSpeed = 10;
+	else
+		movementSpeed = atoi(Editor::GetAttributeValue(spriteNode, "speed"));
+}
+
+void EPlayer::UpdatePlayerData(rapidxml::xml_node<>* sceneAssetNode) {
+	if (Editor::GetAttribute(sceneAssetNode, "speed") != NULL)
+		movementSpeed = atoi(Editor::GetAttributeValue(sceneAssetNode, "speed"));
+
+	pPlayerSprite->UpdateAssetData(sceneAssetNode);
 }
 
 void EPlayer::SetTargetPosition(sf::Vector2f newPos) {
-	targetPos.x = (int)newPos.x;
-	targetPos.y = (int)newPos.y;
-	//pPlayerSprite->pSprite->setPosition(targetPos.x, targetPos.y);
+	std::cout << "reached";
+	if (newPos.x < moveLimit[0])
+		targetPos.x = float(moveLimit[0]);
+	else if (moveLimit[2] < newPos.x)
+		targetPos.x = float(moveLimit[2]);
+	else
+		targetPos.x = (int)newPos.x;
+
+	if (newPos.y < moveLimit[1])
+		targetPos.y = float(moveLimit[1]);
+	else if (moveLimit[3] < newPos.y)
+		targetPos.y = float(moveLimit[3]);
+	else
+		targetPos.y = (int)newPos.y;
+
+	currentMovement = GetMovementVector(targetPos);
 	moving = true;
 }
 
 void EPlayer::MoveToTargetPosition() {
-	if (targetPos != pPlayerSprite->pos) {
-		MoveTo(targetPos);
+	if (!TargetReached()) {
+		pPlayerSprite->MoveTo(currentMovement, movementSpeed);
 	}
 	else
 		moving = false;
@@ -31,30 +53,20 @@ void EPlayer::MoveToTargetPosition() {
 	pPlayerSprite->pos.y = int(pPlayerSprite->pSprite->getPosition().y);
 }
 
-void EPlayer::MoveTo(sf::Vector2i targetPos) {
-	if (pPlayerSprite->pos.x < targetPos.x - movementSpeed.x/2)
-		pPlayerSprite->pSprite->move(movementSpeed.x, 0);
-	else if (pPlayerSprite->pos.x > targetPos.x + movementSpeed.x / 2)
-		pPlayerSprite->pSprite->move(-movementSpeed.x, 0);
-	
-	if (pPlayerSprite->pos.y < targetPos.y - movementSpeed.y/2)
-		pPlayerSprite->pSprite->move(0, movementSpeed.y);
-	else if (pPlayerSprite->pos.y > targetPos.y + movementSpeed.y/2)
-		pPlayerSprite->pSprite->move(0, -movementSpeed.y);
+bool EPlayer::TargetReached() {
+	std::cout << targetPos.x << " " << targetPos.y;
+	if (targetPos.x < pPlayerSprite->pos.x - movementSpeed/2 ||
+		targetPos.x > pPlayerSprite->pos.x + movementSpeed/2 || 
+		targetPos.y < pPlayerSprite->pos.y - movementSpeed/2 ||
+		targetPos.y > pPlayerSprite->pos.y + movementSpeed/2)
+		return false;
+	return true;
 }
 
-void EPlayer::ApplyDefaultPlayerData(rapidxml::xml_node<>* spriteNode) {
-	//applying default values from player node in assets
-	if (Editor::GetAttribute(spriteNode, "speed") == NULL) {
-		movementSpeed.x = 10;
-		movementSpeed.y = 5;
-	}
-	else
-		movementSpeed = Editor::GetAttributeVector2iValue(spriteNode, "speed");
-}
-
-void EPlayer::UpdatePlayerData(rapidxml::xml_node<>* sceneAssetNode) {
-	if (Editor::GetAttribute(sceneAssetNode, "speed") != NULL) {
-		movementSpeed = Editor::GetAttributeVector2iValue(sceneAssetNode, "speed");
-	}
+sf::Vector2f EPlayer::GetMovementVector(sf::Vector2f targetPos) {
+	float xDistance = targetPos.x - pPlayerSprite->pos.x;
+	float yDistance = targetPos.y - pPlayerSprite->pos.y;
+	float pythagorean = std::sqrt(xDistance*xDistance + yDistance * yDistance);
+	sf::Vector2f result(xDistance / pythagorean, yDistance / pythagorean);
+	return result;
 }

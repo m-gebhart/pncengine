@@ -4,6 +4,9 @@
 
 std::string Editor::assetPath = "";
 int Editor::activeSceneId = 0;
+int Editor::fps = 24;
+int Editor::width = 100;
+int Editor::height = 100;
 
 Editor::Editor() {
 }
@@ -33,9 +36,12 @@ void Editor::LoadFile(const char file[]) {
 
 void Editor::SetWindow() {
 	rapidxml::xml_node<>* currentNode = pRootNode;
-	pWindow->setSize(sf::Vector2u(atoi(GetAttributeValue(currentNode, "width")), atoi(GetAttributeValue(currentNode, "height"))));
+	width = atoi(GetAttributeValue(currentNode, "width"));
+	height = atoi(GetAttributeValue(currentNode, "height"));
+	pWindow->setSize(sf::Vector2u(width, height));
 	pWindow->setTitle(GetAttributeValue(currentNode, "title"));
-	pWindow->setFramerateLimit(atoi(GetAttributeValue(currentNode, "fps")));
+	fps = atoi(Editor::GetAttributeValue(currentNode, "fps"));
+	pWindow->setFramerateLimit(fps);
 }
 
 void Editor::LoadAssets() {
@@ -69,10 +75,12 @@ void Editor::LoadAudio(rapidxml::xml_node<>* spriteNode) {}
 void Editor::LoadScene(int sceneId) {
 	pActiveSceneNode = Editor::GetActiveScene(sceneId);
 	pActiveScene = new EScene(pActiveSceneNode);
+	for (int i = 0; i < sizeof(pActiveScene->moveLevelLimit); i++)
+		pPlayer->moveLimit[i] = pActiveScene->moveLevelLimit[i];
 	//loading assets to scene from "bottom up", according to scene's layering hierarchy
 	for (rapidxml::xml_node<>* sceneAssetNode = pActiveSceneNode->last_node(); sceneAssetNode != NULL; sceneAssetNode = sceneAssetNode->previous_sibling())
 		if (strcmp(sceneAssetNode->name(), "player") == 0)
-			Editor::SetPlayerData();
+			Editor::SetPlayerData(sceneAssetNode);
 		else
 			Editor::SetSpriteData(sceneAssetNode);
 }
@@ -89,7 +97,8 @@ void Editor::SetSpriteData(rapidxml::xml_node<>* sceneAssetNode) {
 	}
 }
 
-void Editor::SetPlayerData() {
+void Editor::SetPlayerData(rapidxml::xml_node<>* sceneAssetNode) {
+	pPlayer->UpdatePlayerData(sceneAssetNode);
 	pActiveScene->activeSceneAssets.push_back(pPlayer->pPlayerSprite);
 }
 

@@ -8,7 +8,7 @@ class EScene : public Entity {
 public:
 	rapidxml::xml_node<>* sceneNode;
 	std::vector<ESprite*> activeSceneAssets;
-	int moveLimit[4];
+	int moveLevelLimit[4];
 
 	EScene();
 	EScene(rapidxml::xml_node<>* spriteNode);

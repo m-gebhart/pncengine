@@ -28,6 +28,12 @@ void Entity::SetRotation(float newRot) {
 		pSprite->setRotation(newRot);
 }
 
+void Entity::MoveTo(sf::Vector2f direction, int speed) {
+	for (int lap = speed; lap > 0; lap--) {
+		pSprite->move(direction);
+	}
+}
+
 void Entity::ApplyDefaultAssetData(rapidxml::xml_node<>* spriteNode) {
 	//applying default values from node in assets
 	if (Editor::GetAttribute(spriteNode, "position") == NULL) {
