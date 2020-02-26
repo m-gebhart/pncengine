@@ -3,6 +3,7 @@
 #include "EScene.h"
 
 std::string Editor::assetPath = "";
+std::vector<EAudio*> Editor::audioAssets;
 int Editor::activeSceneId = 0;
 int Editor::fps = 24;
 int Editor::width = 100;
@@ -52,24 +53,17 @@ void Editor::LoadAssets() {
 
 	//storing the assets from AssetsLibrary, saving their data - so that the scene can access them later
 	for (rapidxml::xml_node<>* assetNode = pAssetsLibrary->first_node(); assetNode != NULL; assetNode = assetNode->next_sibling())
-		if (strcmp(assetNode->name(), "sprite")==0)
-			LoadSprite(assetNode);
+		if (strcmp(assetNode->name(), "sprite") == 0) {
+			ESprite* newSprite = new ESprite(assetNode);
+			spriteAssets.push_back(newSprite);
+		}
+		else if (strcmp(assetNode->name(), "audio") == 0) {
+			EAudio* newAudio = new EAudio(assetNode);
+			audioAssets.push_back(newAudio);
+		}
 		else if (strcmp(assetNode->name(), "player")==0)
-			LoadPlayer(assetNode);
-		else if (strcmp(assetNode->name(), "audio")==0)
-			LoadAudio(assetNode);
+			pPlayer = new EPlayer(assetNode);
 }
-
-void Editor::LoadSprite(rapidxml::xml_node<>* spriteNode) {
-	ESprite* newSprite = new ESprite(spriteNode);
-	spriteAssets.push_back(newSprite);
-}
-
-void Editor::LoadPlayer(rapidxml::xml_node<>* spriteNode) {
-	pPlayer = new EPlayer(spriteNode);
-}
-
-void Editor::LoadAudio(rapidxml::xml_node<>* spriteNode) {}
 
 
 void Editor::LoadScene(int sceneId) {
@@ -80,26 +74,26 @@ void Editor::LoadScene(int sceneId) {
 	//loading assets to scene from "bottom up", according to scene's layering hierarchy
 	for (rapidxml::xml_node<>* sceneAssetNode = pActiveSceneNode->last_node(); sceneAssetNode != NULL; sceneAssetNode = sceneAssetNode->previous_sibling())
 		if (strcmp(sceneAssetNode->name(), "player") == 0)
-			Editor::SetPlayerData(sceneAssetNode);
+			Editor::LoadPlayerIntoScene(sceneAssetNode);
 		else
-			Editor::SetSpriteData(sceneAssetNode);
+			Editor::LoadSpriteIntoScene(sceneAssetNode);
 }
 
-void Editor::SetSpriteData(rapidxml::xml_node<>* sceneAssetNode) {
+void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	const char* assetName = sceneAssetNode->name();
 
 	//for every asset, the data from the scene will be applied
 	for (auto &asset : Editor::spriteAssets) {
 		if (strcmp(asset->assetId, assetName) == 0) {
-			asset->UpdateAssetData(sceneAssetNode);
+			asset->UpdateSpriteData(sceneAssetNode);
 			pActiveScene->activeSceneAssets.push_back(asset);
 		}
 	}
 }
 
-void Editor::SetPlayerData(rapidxml::xml_node<>* sceneAssetNode) {
-	pPlayer->UpdatePlayerData(sceneAssetNode);
+void Editor::LoadPlayerIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	pActiveScene->activeSceneAssets.push_back(pPlayer->pPlayerSprite);
+	pPlayer->UpdatePlayerData(sceneAssetNode);
 }
 
 void Editor::DrawOnWindow(){
@@ -114,4 +108,13 @@ rapidxml::xml_node<>* Editor::GetActiveScene(int sceneId) {
 		if (atoi(Editor::GetAttributeValue(sceneNode, "sceneId")) == sceneId)
 			return sceneNode;
 	return NULL;
+}
+
+void Editor::CheckOnClickObjects() {
+	auto clickPos = pWindow->mapPixelToCoords(sf::Mouse::getPosition(*pWindow));
+	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
+		if (asset->onClickAction > 0 && asset->ClickedOn(clickPos)) {
+			asset->pAudio->PlayAudio();
+		}
+	}
 }

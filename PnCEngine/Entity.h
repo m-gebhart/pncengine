@@ -5,13 +5,15 @@
 
 struct Entity
 {
+	const char* assetId;
+	std::string src;
+
 	sf::Vector2i pos;
 	sf::Vector2f scale;
 	sf::Vector2f ori;
 	float rot;
 
-	const char* assetId;
-	std::string src;
+	//---for ESprite and Esprite in EPlayer
 	sf::Sprite* pSprite;
 	sf::Texture* pTexture;
 

@@ -1,12 +1,5 @@
-﻿  eplayer.cpp
-c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(35): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\users\micha\source\repos\pncengine\pncengine\eplayer.cpp(42): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  PnCEngine.vcxproj -> C:\Users\micha\source\repos\PnCEngine\Debug\PnCEngine.exe
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  eaudio.cpp
+c:\users\micha\source\repos\pncengine\pncengine\eaudio.cpp(15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\micha\source\repos\pncengine\pncengine\eaudio.cpp(20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  PnCEngine.vcxproj -> C:\Users\micha\source\repos\PnCEngine\PnCEngine\..\PnCEngine.exe

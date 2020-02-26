@@ -14,17 +14,18 @@ void EPlayer::ApplyDefaultPlayerData(rapidxml::xml_node<>* spriteNode) {
 		movementSpeed = 10;
 	else
 		movementSpeed = atoi(Editor::GetAttributeValue(spriteNode, "speed"));
+
+	//insert animationSystem HERE
 }
 
 void EPlayer::UpdatePlayerData(rapidxml::xml_node<>* sceneAssetNode) {
+	pPlayerSprite->UpdateAssetData(sceneAssetNode);
 	if (Editor::GetAttribute(sceneAssetNode, "speed") != NULL)
 		movementSpeed = atoi(Editor::GetAttributeValue(sceneAssetNode, "speed"));
-
-	pPlayerSprite->UpdateAssetData(sceneAssetNode);
 }
 
 void EPlayer::SetTargetPosition(sf::Vector2f newPos) {
-	std::cout << "reached";
+	//checking for borders of movable area
 	if (newPos.x < moveLimit[0])
 		targetPos.x = float(moveLimit[0]);
 	else if (moveLimit[2] < newPos.x)
@@ -54,7 +55,6 @@ void EPlayer::MoveToTargetPosition() {
 }
 
 bool EPlayer::TargetReached() {
-	std::cout << targetPos.x << " " << targetPos.y;
 	if (targetPos.x < pPlayerSprite->pos.x - movementSpeed/2 ||
 		targetPos.x > pPlayerSprite->pos.x + movementSpeed/2 || 
 		targetPos.y < pPlayerSprite->pos.y - movementSpeed/2 ||

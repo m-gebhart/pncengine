@@ -5,6 +5,7 @@
 #include "ESprite.h"
 #include "EPlayer.h"
 #include "EScene.h"
+#include "EAudio.h"
 
 class Editor : public XML_Base {
 private:
@@ -16,6 +17,7 @@ private:
 public:
 	sf::RenderWindow* pWindow;
 	std::vector<ESprite*> spriteAssets;
+	static std::vector<EAudio*> audioAssets;
 	static std::string assetPath;
 	static int activeSceneId;
 	static int fps;
@@ -30,14 +32,11 @@ public:
 	void SetWindow();
 
 	void LoadAssets();
-	void LoadSprite(rapidxml::xml_node<>* spriteNode);
-	void LoadPlayer(rapidxml::xml_node<>* spriteNode);
-	void LoadAudio(rapidxml::xml_node<>* spriteNode);
-
 	rapidxml::xml_node<>* GetActiveScene(int sceneId);
 	void LoadScene(int scene);
-	void SetSpriteData(rapidxml::xml_node<>* asset);
-	void SetPlayerData(rapidxml::xml_node<>* playerAsset);
+	void LoadSpriteIntoScene(rapidxml::xml_node<>* asset);
+	void LoadPlayerIntoScene(rapidxml::xml_node<>* playerAsset);
 	void DrawOnWindow();
+	void CheckOnClickObjects();
 };
 #endif

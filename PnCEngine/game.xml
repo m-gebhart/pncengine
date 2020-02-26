@@ -9,18 +9,19 @@
       </animations>
     </player>
     <sprite id="background" src="background.png"/>
-    <sprite id="character" src="npc1.png" position="500, 20" scale="0.5, 1"/>
-    <audio id="boxSound" src="box01.mp3"/>
+    <sprite id="character1" src="npc1.png" position="500, 20" scale="0.5, 1"/>
+    <audio id="backgroundS" src="sound01.wav" volume="40"/>
+    <audio id="charS" src="sound01.wav" pitch="0.6"/>
   </assets>
   <scenes>
     <scene sceneId="1" lowerLevelLimit="500">
-      <character onClick="boxSound" position="700, 400"/>
+      <character1 onClickAudio="charS" position="700, 400"/>
       <player position="20, 1000"/>
-      <background/>
+      <background onClickAudio="backgroundS"/>
     </scene>
     <scene sceneId="2">
       <background position="200"/>
-      <character onClick ="boxSound" position="500"/>
+      <character onClickAudio="boxSound" position="500"/>
     </scene>
   </scenes>
 </game>

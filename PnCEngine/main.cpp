@@ -16,10 +16,12 @@ int main() {
 	manager.LoadScene(Editor::activeSceneId);
 	while (gameWindow.isOpen())
 	{
+		if (manager.pPlayer->moving)
+			manager.pPlayer->MoveToTargetPosition();
+
 		sf::Event event;
 		while (gameWindow.pollEvent(event))
 		{
-
 			switch (event.type)
 			{
 			case sf::Event::Closed:
@@ -27,11 +29,10 @@ int main() {
 				break;
 			case sf::Event::MouseButtonPressed:
 				manager.pPlayer->SetTargetPosition(gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow)));
+				manager.CheckOnClickObjects();
 				break;
 			}
 		}
-		if (manager.pPlayer->moving)
-			manager.pPlayer->MoveToTargetPosition();
 
 		gameWindow.clear();
 		manager.DrawOnWindow();

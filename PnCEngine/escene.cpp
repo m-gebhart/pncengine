@@ -5,7 +5,7 @@ EScene::EScene() {}
 
 EScene::EScene(rapidxml::xml_node<>* spriteNode) {
 	sceneNode = spriteNode;
-	ApplySceneData(sceneNode);
+	ApplySceneData(spriteNode);
 }
 
 void EScene::ApplySceneData(rapidxml::xml_node<>* sceneNode) {
