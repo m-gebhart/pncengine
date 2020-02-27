@@ -19,7 +19,7 @@ void EPlayer::ApplyDefaultPlayerData(rapidxml::xml_node<>* spriteNode) {
 }
 
 void EPlayer::UpdatePlayerData(rapidxml::xml_node<>* sceneAssetNode) {
-	pPlayerSprite->UpdateAssetData(sceneAssetNode);
+	pPlayerSprite->UpdateSpriteData(sceneAssetNode);
 	if (Editor::GetAttribute(sceneAssetNode, "speed") != NULL)
 		movementSpeed = atoi(Editor::GetAttributeValue(sceneAssetNode, "speed"));
 }

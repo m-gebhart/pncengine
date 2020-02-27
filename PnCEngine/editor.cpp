@@ -69,8 +69,6 @@ void Editor::LoadAssets() {
 void Editor::LoadScene(int sceneId) {
 	pActiveSceneNode = Editor::GetActiveScene(sceneId);
 	pActiveScene = new EScene(pActiveSceneNode);
-	for (int i = 0; i < sizeof(pActiveScene->moveLevelLimit); i++)
-		pPlayer->moveLimit[i] = pActiveScene->moveLevelLimit[i];
 	//loading assets to scene from "bottom up", according to scene's layering hierarchy
 	for (rapidxml::xml_node<>* sceneAssetNode = pActiveSceneNode->last_node(); sceneAssetNode != NULL; sceneAssetNode = sceneAssetNode->previous_sibling())
 		if (strcmp(sceneAssetNode->name(), "player") == 0)
@@ -82,16 +80,27 @@ void Editor::LoadScene(int sceneId) {
 void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	const char* assetName = sceneAssetNode->name();
 
-	//for every asset, the data from the scene will be applied
+	//for every asset, data from nodes in scene will be applied
 	for (auto &asset : Editor::spriteAssets) {
-		if (strcmp(asset->assetId, assetName) == 0) {
-			asset->UpdateSpriteData(sceneAssetNode);
-			pActiveScene->activeSceneAssets.push_back(asset);
-		}
+		if (strcmp(asset->assetId, assetName) == 0)
+			if (asset->instantiated > 0){
+				//if first instance already exists, copy and create one more instance
+				ESprite* newSprite = new ESprite(asset->pNodeInAssets);
+				newSprite->UpdateSpriteData(sceneAssetNode);
+				pActiveScene->activeSceneAssets.push_back(newSprite);
+			}
+			else {
+				asset->instantiated = true;
+				asset->UpdateSpriteData(sceneAssetNode);
+				pActiveScene->activeSceneAssets.push_back(asset);
+			}
 	}
 }
 
 void Editor::LoadPlayerIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
+	for (int i = 0; i < sizeof(pActiveScene->moveLevelLimit); i++)
+		pPlayer->moveLimit[i] = pActiveScene->moveLevelLimit[i];
+
 	pActiveScene->activeSceneAssets.push_back(pPlayer->pPlayerSprite);
 	pPlayer->UpdatePlayerData(sceneAssetNode);
 }
@@ -114,7 +123,8 @@ void Editor::CheckOnClickObjects() {
 	auto clickPos = pWindow->mapPixelToCoords(sf::Mouse::getPosition(*pWindow));
 	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
 		if (asset->onClickAction > 0 && asset->ClickedOn(clickPos)) {
-			asset->pAudio->PlayAudio();
+			if (asset->pAudio != NULL)
+				asset->pAudio->PlaySound();
 		}
 	}
 }

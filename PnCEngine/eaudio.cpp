@@ -9,6 +9,7 @@ EAudio::EAudio(rapidxml::xml_node<>* assetNode) {
 }
 
 void EAudio::ApplyDefaultAudioData(rapidxml::xml_node<>* audioNode) {
+	pNodeInAssets = audioNode;
 	if (Editor::GetAttribute(audioNode, "volume") == NULL)
 		vol = 100;
 	else
@@ -20,7 +21,18 @@ void EAudio::ApplyDefaultAudioData(rapidxml::xml_node<>* audioNode) {
 		pitch = atof(Editor::GetAttributeValue(audioNode, "pitch"));
 }
 
-void EAudio::LoadAudio() {
+void EAudio::UpdateAudioData(rapidxml::xml_node<>* audioNode) {
+	if (Editor::GetAttribute(audioNode, "volume") != NULL)
+		vol = atof(Editor::GetAttributeValue(audioNode, "volume"));
+
+	if (Editor::GetAttribute(audioNode, "pitch") != NULL)
+		pitch = atof(Editor::GetAttributeValue(audioNode, "pitch"));
+
+	sound.setVolume(vol);
+	sound.setPitch(pitch);
+}
+
+void EAudio::LoadSound() {
 	if (buffer.loadFromFile(src) != NULL){
 		buffer.loadFromFile(src);
 		sound.setBuffer(buffer);
@@ -29,6 +41,15 @@ void EAudio::LoadAudio() {
 	}
 }
 
-void EAudio::PlayAudio() {
+void EAudio::PlaySound() {
 	sound.play();
+}
+
+void EAudio::LoadMusic() {
+	if (music.openFromFile(src) != NULL) {
+		music.openFromFile(src);
+		music.setVolume(vol);
+		music.setPitch(pitch);
+		music.play();
+	}
 }
