@@ -5,6 +5,7 @@
 
 std::string Editor::assetPath = "";
 std::vector<EAudio*> Editor::audioAssets;
+std::vector<EText*> Editor::textAssets;
 int Editor::activeSceneId = 0;
 int Editor::fps = 24;
 int Editor::width = 100;
@@ -85,6 +86,14 @@ void Editor::LoadScene(int sceneId) {
 	Editor::LoadTextInScene(pActiveSceneNode);
 }
 
+void Editor::LoadPlayerIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
+	for (int i = 0; i < sizeof(pActiveScene->moveLevelLimit); i++)
+		pPlayer->moveLimit[i] = pActiveScene->moveLevelLimit[i];
+
+	pActiveScene->activeSceneSpriteAssets.push_back(pPlayer->pPlayerSprite);
+	pPlayer->UpdatePlayerData(sceneAssetNode);
+}
+
 void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	const char* assetName = sceneAssetNode->name();
 
@@ -95,22 +104,14 @@ void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 				//if first instance of same assetId already exists, copy and create one more instance
 				ESprite* newSprite = new ESprite(asset->pNodeInAssets);
 				newSprite->UpdateSpriteData(sceneAssetNode);
-				pActiveScene->activeSceneAssets.push_back(newSprite);
+				pActiveScene->activeSceneSpriteAssets.push_back(newSprite);
 			}
 			else {
 				asset->instantiated = true;
 				asset->UpdateSpriteData(sceneAssetNode);
-				pActiveScene->activeSceneAssets.push_back(asset);
+				pActiveScene->activeSceneSpriteAssets.push_back(asset);
 			}
 	}
-}
-
-void Editor::LoadPlayerIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
-	for (int i = 0; i < sizeof(pActiveScene->moveLevelLimit); i++)
-		pPlayer->moveLimit[i] = pActiveScene->moveLevelLimit[i];
-
-	pActiveScene->activeSceneAssets.push_back(pPlayer->pPlayerSprite);
-	pPlayer->UpdatePlayerData(sceneAssetNode);
 }
 
 void Editor::LoadTextInScene(rapidxml::xml_node<>* sceneNode) {
@@ -124,6 +125,7 @@ void Editor::LoadTextInScene(rapidxml::xml_node<>* sceneNode) {
 					pActiveScene->activeSceneTextAssets.push_back(newText);
 				}
 				else {
+					std::cout << asset->content;
 					asset->instantiated = true;
 					asset->UpdateTextData(sceneTextNode);
 					pActiveScene->activeSceneTextAssets.push_back(asset);
@@ -134,13 +136,11 @@ void Editor::LoadTextInScene(rapidxml::xml_node<>* sceneNode) {
 }
 
 void Editor::DrawOnWindow(){
-	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
+	for (auto &asset : Editor::pActiveScene->activeSceneSpriteAssets)
 		pWindow->draw(*asset->ESprite::pSprite);
-	}
 
-	for (auto &asset : Editor::pActiveScene->activeSceneTextAssets) {
+	for (auto &asset : Editor::pActiveScene->activeSceneTextAssets)
 		pWindow->draw(asset->EText::text);
-	}
 }
 
 rapidxml::xml_node<>* Editor::GetActiveScene(int sceneId) {
@@ -152,11 +152,26 @@ rapidxml::xml_node<>* Editor::GetActiveScene(int sceneId) {
 }
 
 void Editor::CheckOnClickObjects() {
+	//remove text of latest onClickText()
+	bool removeLatestText = false;
+	if (pActiveScene->activeSceneTextAssets.back()->displayed > 0)
+		removeLatestText = true;
+
+	//checking each OnClickAudio and OnClickText-Reactions with MousePos
 	auto clickPos = pWindow->mapPixelToCoords(sf::Mouse::getPosition(*pWindow));
-	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
-		if (asset->onClickAction > 0 && asset->ClickedOn(clickPos)) {
-			if (asset->pAudio != NULL)
+	for (auto &asset : Editor::pActiveScene->activeSceneSpriteAssets) {
+		if (asset->ClickedOn(clickPos)) {
+			if (asset->onClickAudio > 0 && asset->pAudio != NULL)
 				asset->pAudio->PlaySound();
+			if (asset->onClickText > 0 && asset->pText != NULL && !asset->pText->displayed > 0) {
+				pActiveScene->activeSceneTextAssets.push_back(asset->pText);
+				asset->pText->displayed = true;
+			}
 		}
+	}
+
+	if (removeLatestText > 0) {
+		pActiveScene->activeSceneTextAssets.back()->displayed = false;
+		pActiveScene->activeSceneTextAssets.erase(pActiveScene->activeSceneTextAssets.begin() + pActiveScene->activeSceneTextAssets.size() - 1);
 	}
 }

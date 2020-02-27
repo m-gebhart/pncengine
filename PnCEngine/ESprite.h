@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "EAudio.h"
+#include "EText.h"
 
 class ESprite : public Entity {
 public:
@@ -11,7 +12,9 @@ public:
 	rapidxml::xml_node<>* pNodeInAssets;
 	rapidxml::xml_node<>* pNodeInScene;
 	EAudio* pAudio;
-	bool onClickAction = false;
+	EText* pText;
+	bool onClickAudio = false;
+	bool onClickText = false;
 
 	ESprite();
 	ESprite(rapidxml::xml_node<>* spriteNode);
@@ -24,6 +27,7 @@ public:
 
 	void UpdateSpriteData(rapidxml::xml_node<>* spriteSceneNode);
 	void SetUpAudio(const char* audioData);
+	void SetUpText(const char* textData);
 	bool ClickedOn(sf::Vector2f clickPos);
 };
 #endif

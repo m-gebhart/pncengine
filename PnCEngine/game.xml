@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <game title="Point and Click Adventure Game" width="1920" height="1080" fps="48" entryScene="1">
   <assets path="/assets">
-    <player id="player" src="player_default.png" speed="5" origin="50, 50" position="200, 200">
-      <animations>
-        <idle/>
-        <left path="/walking" />
-        <right/>
-      </animations>
-    </player>
+    <player id="player" src="player_default.png" speed="5" origin="50, 50" position="200, 200"/>
     <sprite id="background" src="background.png"/>
     <sprite id="character1" src="npc1.png" position="500, 20" scale="0.5, 1"/>
     <audio id="backgroundSound" src="sound01.wav"/>
@@ -16,12 +10,11 @@
   </assets>
   <scenes>
     <scene sceneId="1" lowerLevelLimit="500" music="backgroundSound">
-      <character1 onClickAudio="abstract" pitch="0.3" position="700, 400" scale="-0.6, 1" volume="20"/>
-      <character1 onClickAudio="abstract" onClickText="LeftCharacter" position="100, 400" volume="80"/>
+      <character1 onClickAudio="abstract" onClickText="arcadeTxt" pitch="0.3" position="700, 400" scale="-0.6, 0.6" volume="20">Small Hardy</character1>
+      <character1 onClickAudio="abstract" onClickText="arcadeTxt" position="100, 400" volume="80" textPosition="50, 50">BIG HARDY</character1>
       <player position="20, 1000"/>
       <background onClickAudio="abstract"/>
-      <arcadeTxt/>
-      <arcadeTxt position="100, 200">T</arcadeTxt>
+      <arcadeTxt position="100, 200"></arcadeTxt>
     </scene>
     <scene sceneId="2">
       <background position="200"/>

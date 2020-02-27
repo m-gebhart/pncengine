@@ -1,3 +1,10 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  etext.cpp
+  editor.cpp
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(21): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(103): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(121): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(157): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(164): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(166): warning C4804: '>': unsafe use of type 'bool' in operation
+c:\users\micha\source\repos\pncengine\pncengine\editor.cpp(173): warning C4804: '>': unsafe use of type 'bool' in operation
   PnCEngine.vcxproj -> C:\Users\micha\source\repos\PnCEngine\PnCEngine\..\PnCEngine.exe

@@ -18,7 +18,7 @@ private:
 public:
 	sf::RenderWindow* pWindow;
 	std::vector<ESprite*> spriteAssets;
-	std::vector<EText*> textAssets;
+	static std::vector<EText*> textAssets;
 	static std::vector<EAudio*> audioAssets;
 	static std::string assetPath;
 	static int activeSceneId;

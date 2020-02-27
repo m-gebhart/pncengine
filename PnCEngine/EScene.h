@@ -11,7 +11,7 @@ class EScene : public Entity {
 
 public:
 	rapidxml::xml_node<>* sceneNode;
-	std::vector<ESprite*> activeSceneAssets;
+	std::vector<ESprite*> activeSceneSpriteAssets;
 	std::vector<EText*> activeSceneTextAssets;
 	int moveLevelLimit[4];
 

@@ -22,15 +22,14 @@ int main() {
 		sf::Event event;
 		while (gameWindow.pollEvent(event))
 		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-				gameWindow.close();
-				break;
-			case sf::Event::MouseButtonPressed:
-				manager.pPlayer->SetTargetPosition(gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow)));
-				manager.CheckOnClickObjects();
-				break;
+			switch (event.type){
+				case sf::Event::Closed:
+					gameWindow.close();
+					break;
+				case sf::Event::MouseButtonPressed:
+					manager.pPlayer->SetTargetPosition(gameWindow.mapPixelToCoords(sf::Mouse::getPosition(gameWindow)));
+					manager.CheckOnClickObjects();
+					break;
 			}
 		}
 

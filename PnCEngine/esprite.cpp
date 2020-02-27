@@ -74,10 +74,13 @@ void ESprite::UpdateSpriteData(rapidxml::xml_node<>* spriteSceneNode) {
 
 	if (Editor::GetAttribute(spriteSceneNode, "onClickAudio") != NULL)
 		SetUpAudio(Editor::GetAttributeValue(spriteSceneNode, "onClickAudio"));
+
+	if (Editor::GetAttribute(spriteSceneNode, "onClickText") != NULL)
+		SetUpText(Editor::GetAttributeValue(spriteSceneNode, "onClickText"));
 }
 
 void ESprite::SetUpAudio(const char* audioId) {
-	onClickAction = true;
+	onClickAudio = true;
 	for (auto &audio : Editor::audioAssets) {
 		if (strcmp(audio->assetId, audioId) == 0) {
 			if (audio->instantiated > 0) {
@@ -92,6 +95,25 @@ void ESprite::SetUpAudio(const char* audioId) {
 				audio->UpdateAudioData(pNodeInScene);
 				audio->LoadSound();
 				pAudio = audio;
+			}
+		}
+	}
+}
+
+void ESprite::SetUpText(const char* textId) {
+	onClickText = true;
+	for (auto &text : Editor::textAssets) {
+		if (strcmp(text->assetId, textId) == 0) {
+			if (text->instantiated > 0) {
+				//if sound already exists in scene, create one more instance for current ESprite
+				EText* newText = new EText(text->pNodeInAssets);
+				newText->UpdateTextData(pNodeInScene); 
+				pText = newText;
+			}
+			else {
+				text->instantiated = true;
+				text->UpdateTextData(pNodeInScene);
+				pText = text;
 			}
 		}
 	}

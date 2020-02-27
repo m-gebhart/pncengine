@@ -8,17 +8,19 @@ class EText : public Entity {
 	int size;
 	std::string style;
 	std::string color;
+
+public:
 	std::string content;
+	sf::Text text;
+	rapidxml::xml_node<>* pNodeInAssets;
+	float displayTime = 2;
+	bool displayed;
 
-	public:
-		sf::Text text;
-		rapidxml::xml_node<>* pNodeInAssets;
-
-		EText();
-		EText(rapidxml::xml_node<>* textNode);
-		void SetPosition(sf::Vector2f newPos);
-		void SetContent(std::string newText);
-		void ApplyDefaultTextData(rapidxml::xml_node<>* textNode);
-		void UpdateTextData(rapidxml::xml_node<>* textSceneNode);
+	EText();
+	EText(rapidxml::xml_node<>* textNode);
+	void SetPosition(sf::Vector2f newPos);
+	void SetContent(std::string newText);
+	void ApplyDefaultTextData(rapidxml::xml_node<>* textNode);
+	void UpdateTextData(rapidxml::xml_node<>* textSceneNode);
 };
 #endif
