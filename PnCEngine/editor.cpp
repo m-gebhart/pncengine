@@ -11,8 +11,7 @@ int Editor::fps = 24;
 int Editor::width = 100;
 int Editor::height = 100;
 
-Editor::Editor() {
-}
+Editor::Editor() {}
 
 void Editor::LoadFile(const char file[]) {
 	std::ifstream gameData(file, std::ios::binary);
@@ -125,7 +124,6 @@ void Editor::LoadTextInScene(rapidxml::xml_node<>* sceneNode) {
 					pActiveScene->activeSceneTextAssets.push_back(newText);
 				}
 				else {
-					std::cout << asset->content;
 					asset->instantiated = true;
 					asset->UpdateTextData(sceneTextNode);
 					pActiveScene->activeSceneTextAssets.push_back(asset);
@@ -153,9 +151,12 @@ rapidxml::xml_node<>* Editor::GetActiveScene(int sceneId) {
 
 void Editor::CheckOnClickObjects() {
 	//remove text of latest onClickText()
-	bool removeLatestText = false;
-	if (pActiveScene->activeSceneTextAssets.back()->displayed > 0)
-		removeLatestText = true;
+	bool recentlyRemoved = false;
+	if (pActiveScene->activeSceneTextAssets.back()->displayed > 0) {
+		pActiveScene->activeSceneTextAssets.back()->displayed = false;
+		pActiveScene->activeSceneTextAssets.erase(pActiveScene->activeSceneTextAssets.begin() + pActiveScene->activeSceneTextAssets.size() - 1);
+		recentlyRemoved = true;
+	}
 
 	//checking each OnClickAudio and OnClickText-Reactions with MousePos
 	auto clickPos = pWindow->mapPixelToCoords(sf::Mouse::getPosition(*pWindow));
@@ -163,15 +164,10 @@ void Editor::CheckOnClickObjects() {
 		if (asset->ClickedOn(clickPos)) {
 			if (asset->onClickAudio > 0 && asset->pAudio != NULL)
 				asset->pAudio->PlaySound();
-			if (asset->onClickText > 0 && asset->pText != NULL && !asset->pText->displayed > 0) {
+			if (asset->onClickText > 0 && asset->pText != NULL && !asset->pText->displayed > 0 && !recentlyRemoved > 0) {
 				pActiveScene->activeSceneTextAssets.push_back(asset->pText);
 				asset->pText->displayed = true;
 			}
 		}
-	}
-
-	if (removeLatestText > 0) {
-		pActiveScene->activeSceneTextAssets.back()->displayed = false;
-		pActiveScene->activeSceneTextAssets.erase(pActiveScene->activeSceneTextAssets.begin() + pActiveScene->activeSceneTextAssets.size() - 1);
 	}
 }

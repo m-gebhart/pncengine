@@ -24,6 +24,11 @@ void EText::SetContent(std::string newContent) {
 	text.setString(content);
 }
 
+void EText::SetSize(int newSize) {
+	size = newSize;
+	text.setCharacterSize(size);
+}
+
 void EText::ApplyDefaultTextData(rapidxml::xml_node<>* textNode) {
 	font.loadFromFile(src);
 
@@ -31,7 +36,6 @@ void EText::ApplyDefaultTextData(rapidxml::xml_node<>* textNode) {
 		content = "[missing]";
 	else
 		content = textNode->value();
-
 
 	if (Editor::GetAttribute(textNode, "size") == NULL)
 		size = 15;
