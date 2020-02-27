@@ -4,12 +4,12 @@
 EAudio::EAudio() {}
 
 EAudio::EAudio(rapidxml::xml_node<>* assetNode) {
+	pNodeInAssets = assetNode;
 	ApplyDefaultAssetData(assetNode);
 	ApplyDefaultAudioData(assetNode);
 }
 
 void EAudio::ApplyDefaultAudioData(rapidxml::xml_node<>* audioNode) {
-	pNodeInAssets = audioNode;
 	if (Editor::GetAttribute(audioNode, "volume") == NULL)
 		vol = 100;
 	else
@@ -21,12 +21,12 @@ void EAudio::ApplyDefaultAudioData(rapidxml::xml_node<>* audioNode) {
 		pitch = atof(Editor::GetAttributeValue(audioNode, "pitch"));
 }
 
-void EAudio::UpdateAudioData(rapidxml::xml_node<>* audioNode) {
-	if (Editor::GetAttribute(audioNode, "volume") != NULL)
-		vol = atof(Editor::GetAttributeValue(audioNode, "volume"));
+void EAudio::UpdateAudioData(rapidxml::xml_node<>* audioSceneNode) {
+	if (Editor::GetAttribute(audioSceneNode, "volume") != NULL)
+		vol = atof(Editor::GetAttributeValue(audioSceneNode, "volume"));
 
-	if (Editor::GetAttribute(audioNode, "pitch") != NULL)
-		pitch = atof(Editor::GetAttributeValue(audioNode, "pitch"));
+	if (Editor::GetAttribute(audioSceneNode, "pitch") != NULL)
+		pitch = atof(Editor::GetAttributeValue(audioSceneNode, "pitch"));
 
 	sound.setVolume(vol);
 	sound.setPitch(pitch);

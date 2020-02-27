@@ -152,6 +152,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="eplayer.cpp" />
     <ClCompile Include="escene.cpp" />
+    <ClCompile Include="etext.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="esprite.cpp" />
     <ClCompile Include="xml_base.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="EPlayer.h" />
     <ClInclude Include="EScene.h" />
     <ClInclude Include="ESprite.h" />
+    <ClInclude Include="EText.h" />
     <ClInclude Include="XML_Base.h" />
   </ItemGroup>
   <ItemGroup>

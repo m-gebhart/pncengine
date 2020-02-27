@@ -12,13 +12,16 @@
     <sprite id="character1" src="npc1.png" position="500, 20" scale="0.5, 1"/>
     <audio id="backgroundSound" src="sound01.wav"/>
     <audio id="abstract" src="sound01.wav" pitch="0.9" volume="90"/>
+    <text id="arcadeTxt" src="arcadeclassic.ttf" size="30">ORIGIN</text>
   </assets>
   <scenes>
     <scene sceneId="1" lowerLevelLimit="500" music="backgroundSound">
       <character1 onClickAudio="abstract" pitch="0.3" position="700, 400" scale="-0.6, 1" volume="20"/>
-      <character1 onClickAudio="abstract" position="100, 400" volume="80"/>
+      <character1 onClickAudio="abstract" onClickText="LeftCharacter" position="100, 400" volume="80"/>
       <player position="20, 1000"/>
       <background onClickAudio="abstract"/>
+      <arcadeTxt/>
+      <arcadeTxt position="100, 200">T</arcadeTxt>
     </scene>
     <scene sceneId="2">
       <background position="200"/>

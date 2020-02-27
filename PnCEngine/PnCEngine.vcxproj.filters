@@ -39,6 +39,9 @@
     <ClCompile Include="eaudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="etext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

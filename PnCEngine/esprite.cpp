@@ -17,7 +17,7 @@ ESprite::ESprite(rapidxml::xml_node<>* spriteNode) {
 	ESprite::SetRotation(rot);
 }
 
-void ESprite::SetPosition(sf::Vector2i newPos) {
+void ESprite::SetPosition(sf::Vector2f newPos) {
 	pos = newPos;
 	if (pSprite != NULL)
 		pSprite->setPosition(newPos.x, newPos.y);
@@ -34,6 +34,7 @@ void ESprite::SetScale(sf::Vector2f newScale) {
 }
 
 void ESprite::SetOrigin(sf::Vector2f newOrigin) {
+	ori = newOrigin;
 	if (pSprite != NULL)
 		pSprite->setOrigin(newOrigin.x, newOrigin.y);
 }
@@ -56,31 +57,23 @@ bool ESprite::ClickedOn(sf::Vector2f clickPos) {
 	return false;
 }
 
-void ESprite::UpdateSpriteData(rapidxml::xml_node<>* spriteNode) {
-	pNodeInScene = spriteNode;
+void ESprite::UpdateSpriteData(rapidxml::xml_node<>* spriteSceneNode) {
+	pNodeInScene = spriteSceneNode;
 
-	if (Editor::GetAttribute(spriteNode, "position") != NULL) {
-		pos = Editor::GetAttributeVector2iValue(spriteNode, "position");
-		SetPosition(pos);
-	}
+	if (Editor::GetAttribute(spriteSceneNode, "position") != NULL)
+		SetPosition(Editor::GetAttributeVector2fValue(spriteSceneNode, "position"));
 
-	if (Editor::GetAttribute(spriteNode, "scale") != NULL) {
-		scale = Editor::GetAttributeVector2fValue(spriteNode, "scale");
-		SetScale(scale);
-	}
+	if (Editor::GetAttribute(spriteSceneNode, "scale") != NULL)
+		SetScale(Editor::GetAttributeVector2fValue(spriteSceneNode, "scale"));
+	
+	if (Editor::GetAttribute(spriteSceneNode, "rotation") != NULL)
+		SetRotation(atoi(Editor::GetAttributeValue(spriteSceneNode, "rotation")));
 
-	if (Editor::GetAttribute(spriteNode, "rotation") != NULL) {
-		rot = atoi(Editor::GetAttributeValue(spriteNode, "rotation"));
-		SetRotation(rot);
-	}
+	if (Editor::GetAttribute(spriteSceneNode, "origin") != NULL)
+		SetOrigin(Editor::GetAttributeVector2fValue(spriteSceneNode, "origin"));
 
-	if (Editor::GetAttribute(spriteNode, "origin") != NULL) {
-		ori = Editor::GetAttributeVector2fValue(spriteNode, "origin");
-		SetOrigin(ori);
-	}
-
-	if (Editor::GetAttribute(spriteNode, "onClickAudio") != NULL)
-		SetUpAudio(Editor::GetAttributeValue(spriteNode, "onClickAudio"));
+	if (Editor::GetAttribute(spriteSceneNode, "onClickAudio") != NULL)
+		SetUpAudio(Editor::GetAttributeValue(spriteSceneNode, "onClickAudio"));
 }
 
 void ESprite::SetUpAudio(const char* audioId) {

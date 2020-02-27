@@ -15,7 +15,7 @@ public:
 	EAudio();
 	EAudio(rapidxml::xml_node<>* audioNode);
 	void ApplyDefaultAudioData(rapidxml::xml_node<>* audioNode);
-	void UpdateAudioData(rapidxml::xml_node<>* audioNode);
+	void UpdateAudioData(rapidxml::xml_node<>* audioSceneNode);
 	void LoadSound();
 	void PlaySound();
 	void LoadMusic();

@@ -15,7 +15,7 @@ public:
 	int moveLimit[4];
 
 	EPlayer();
-	EPlayer(rapidxml::xml_node<>* assetNode);
+	EPlayer(rapidxml::xml_node<>* playerNode);
 	void ApplyDefaultPlayerData(rapidxml::xml_node<>* playerSceneNode);
 	void UpdatePlayerData(rapidxml::xml_node<>* playerSceneNode);
 	void SetTargetPosition(sf::Vector2f pos);

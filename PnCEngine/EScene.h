@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "ESprite.h"
 #include "EAudio.h"
+#include "EText.h"
 
 class EScene : public Entity {
 	EAudio* pMusic;
@@ -11,6 +12,7 @@ class EScene : public Entity {
 public:
 	rapidxml::xml_node<>* sceneNode;
 	std::vector<ESprite*> activeSceneAssets;
+	std::vector<EText*> activeSceneTextAssets;
 	int moveLevelLimit[4];
 
 	EScene();

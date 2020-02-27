@@ -8,7 +8,7 @@ void Entity::ApplyDefaultAssetData(rapidxml::xml_node<>* spriteNode) {
 		pos.y = pos.x;
 	}
 	else
-		pos = Editor::GetAttributeVector2iValue(spriteNode, "position");
+		pos = Editor::GetAttributeVector2fValue(spriteNode, "position");
 
 	if (Editor::GetAttribute(spriteNode, "scale") == NULL) {
 		scale.x = 1;

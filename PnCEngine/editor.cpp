@@ -1,6 +1,7 @@
 #include "Editor.h"
 #include "ESprite.h"
 #include "EScene.h"
+#include "EText.h"
 
 std::string Editor::assetPath = "";
 std::vector<EAudio*> Editor::audioAssets;
@@ -61,7 +62,11 @@ void Editor::LoadAssets() {
 			EAudio* newAudio = new EAudio(assetNode);
 			audioAssets.push_back(newAudio);
 		}
-		else if (strcmp(assetNode->name(), "player")==0)
+		else if (strcmp(assetNode->name(), "text") == 0) {
+			EText* newText = new EText(assetNode);
+			textAssets.push_back(newText);
+		}
+		else if (strcmp(assetNode->name(), "player") == 0)
 			pPlayer = new EPlayer(assetNode);
 }
 
@@ -69,12 +74,15 @@ void Editor::LoadAssets() {
 void Editor::LoadScene(int sceneId) {
 	pActiveSceneNode = Editor::GetActiveScene(sceneId);
 	pActiveScene = new EScene(pActiveSceneNode);
-	//loading assets to scene from "bottom up", according to scene's layering hierarchy
+	//loading sprite-assets (regular sprites, player) from "bottom up", according to scene's layering hierarchy
 	for (rapidxml::xml_node<>* sceneAssetNode = pActiveSceneNode->last_node(); sceneAssetNode != NULL; sceneAssetNode = sceneAssetNode->previous_sibling())
 		if (strcmp(sceneAssetNode->name(), "player") == 0)
 			Editor::LoadPlayerIntoScene(sceneAssetNode);
 		else
 			Editor::LoadSpriteIntoScene(sceneAssetNode);
+
+	//loading textAssets on Top
+	Editor::LoadTextInScene(pActiveSceneNode);
 }
 
 void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
@@ -84,7 +92,7 @@ void Editor::LoadSpriteIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	for (auto &asset : Editor::spriteAssets) {
 		if (strcmp(asset->assetId, assetName) == 0)
 			if (asset->instantiated > 0){
-				//if first instance already exists, copy and create one more instance
+				//if first instance of same assetId already exists, copy and create one more instance
 				ESprite* newSprite = new ESprite(asset->pNodeInAssets);
 				newSprite->UpdateSpriteData(sceneAssetNode);
 				pActiveScene->activeSceneAssets.push_back(newSprite);
@@ -105,9 +113,33 @@ void Editor::LoadPlayerIntoScene(rapidxml::xml_node<>* sceneAssetNode) {
 	pPlayer->UpdatePlayerData(sceneAssetNode);
 }
 
+void Editor::LoadTextInScene(rapidxml::xml_node<>* sceneNode) {
+	for (auto &asset : Editor::textAssets) {
+		for (rapidxml::xml_node<>* sceneTextNode = sceneNode->first_node(); sceneTextNode != NULL; sceneTextNode = sceneTextNode->next_sibling()) {
+			if (strcmp(sceneTextNode->name(), asset->assetId) == 0){
+				if (asset->instantiated > 0) {
+					//if first instance of same assetId already exists, copy and create one more instance
+					EText* newText = new EText(asset->pNodeInAssets);
+					newText->UpdateTextData(sceneTextNode);
+					pActiveScene->activeSceneTextAssets.push_back(newText);
+				}
+				else {
+					asset->instantiated = true;
+					asset->UpdateTextData(sceneTextNode);
+					pActiveScene->activeSceneTextAssets.push_back(asset);
+				}
+			}
+		}
+	}
+}
+
 void Editor::DrawOnWindow(){
 	for (auto &asset : Editor::pActiveScene->activeSceneAssets) {
 		pWindow->draw(*asset->ESprite::pSprite);
+	}
+
+	for (auto &asset : Editor::pActiveScene->activeSceneTextAssets) {
+		pWindow->draw(asset->EText::text);
 	}
 }
 
