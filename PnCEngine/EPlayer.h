@@ -10,6 +10,7 @@ class EPlayer {
 	sf::Vector2f currentMovement;
 public:
 	sf::Vector2f targetPos;
+	rapidxml::xml_node<>* playerNode;
 	ESprite* pPlayerSprite;
 	bool moving = false;
 	int moveLimit[4];

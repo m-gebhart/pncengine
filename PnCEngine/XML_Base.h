@@ -3,6 +3,7 @@
 
 #include "rapidxml.hpp"
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -15,5 +16,6 @@ struct XML_Base {
 	static sf::Vector2f GetAttributeVector2fValue(rapidxml::xml_node<>* pNode, const char* name);
 	static std::string GetStringVectorValue(rapidxml::xml_node<>* pNode, const char* name);
 	static char* GetAttributeValue(rapidxml::xml_node<>* pNode, const char* name);
+	static std::vector<int> GetAttributeVector4iValue(rapidxml::xml_node<>* pNode, const char* name);
 };
 #endif

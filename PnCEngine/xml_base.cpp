@@ -39,6 +39,24 @@ std::string XML_Base::GetStringVectorValue(rapidxml::xml_node<>* pNode, const ch
 	return "";
 }
 
+std::vector<int> XML_Base::GetAttributeVector4iValue(rapidxml::xml_node<>* pNode, const char* name) {
+	std::vector<int> tempVector;
+	for (int i = 0; i < 4; i++)
+		tempVector.push_back(0);
+
+	if (XML_Base::GetAttribute(pNode, name) != NULL) {
+		int pos = 0;
+		std::string value = XML_Base::GetAttributeValue(pNode, name);
+		std::string str = std::string(name);
+		while ((pos = str.find(",")) != NULL && pos < sizeof(str)) {
+			value = str.substr(0, pos);
+			tempVector.push_back(stoi(value));
+			str.erase(0, pos + 2);
+		}
+	}
+	return tempVector;
+}
+
 rapidxml::xml_node<>* XML_Base::FindChildNode(rapidxml::xml_node<>* pNode, const char* name) {
 	//by Markus H.
 	for (rapidxml::xml_node<>* pChildNode = pNode->first_node(); pChildNode != NULL; pChildNode = pChildNode->next_sibling())

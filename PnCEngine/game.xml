@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <game title="Point and Click Adventure Game" width="1920" height="1080" fps="48" entryScene="1">
   <assets path="/assets">
-    <player id="player" src="player_default.png" speed="5" origin="50, 50" position="200, 200"/>
-    <sprite id="background" src="background.png"/>
-    <sprite id="character1" src="npc1.png" position="500, 20" scale="0.5, 1"/>
-    <audio id="backgroundSound" src="sound01.wav"/>
-    <audio id="abstract" src="sound01.wav" pitch="0.9" volume="90"/>
-    <text id="arcadeTxt" src="arcadeclassic.ttf" size="30">ORIGIN</text>
+    <player id="player" src="player_default.png" speed="5" origin="50, 50" position="100, 650"/>
+    <sprite id="npc" src="npc1.png" scale="0.5, 1"/>
+    <sprite id="background" src="background.jpg" scale="0.7, 0.6" origin="500, 400"/>
+    <sprite id="box" src="crate.png" position="800, 950" scale="0.6, 0.6"/>
+    <sprite id="sun" src="sun.png" position="40,40" scale="0.3, 0.3"/>
+    <audio id="soundtrack" src="sound01.wav"/>
+    <audio id="clickSound" src="sound01.wav" pitch="0.9"/>
+    <text id="txt" src="arcadeclassic.ttf" size="40"/>
   </assets>
   <scenes>
-    <scene sceneId="1" lowerLevelLimit="500" music="backgroundSound">
-      <character1 onClickAudio="abstract" onClickText="arcadeTxt" pitch="0.3" position="700, 400" scale="-0.6, 0.6" volume="20">Small Hardy</character1>
-      <character1 onClickAudio="abstract" onClickText="arcadeTxt" position="100, 400" volume="80" textPosition="50, 50">BIG HARDY</character1>
-      <player position="20, 1000"/>
-      <background onClickAudio="abstract"/>
-      <arcadeTxt position="100, 200"></arcadeTxt>
-    </scene>
-    <scene sceneId="2">
-      <background position="200"/>
-      <character onClickAudio="abstract" position="500"/>
+    <scene sceneId="1" rightLevelLimit="900" upperLevelLimit="650" music="soundtrack">
+      <txt position="450, 100">GAME ON!</txt>
+      <sun onClickText="txt" textPosition="40, 300">I am a Sun!</sun>
+      <box/>
+      <player/>
+      <box position="1050, 780" rotation="90"/>
+      <npc position="730, 650" scale="-0.6, 0.6" onClickAudio="clickSound" pitch="0.7" onClickText="txt">SMALL GUY</npc>
+      <npc position="400, 590" onClickAudio="clickSound" pitch="0.4" onClickText="txt" textPosition="400, 500">BIG GUY</npc>
+      <background onClickAudio="clickSound" volume="20"/>
     </scene>
   </scenes>
 </game>

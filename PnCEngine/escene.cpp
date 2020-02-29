@@ -19,7 +19,7 @@ void EScene::ApplySceneData(rapidxml::xml_node<>* sceneNode) {
 	else
 		moveLevelLimit[1] = 0;
 	
-	if (Editor::GetAttribute(sceneNode, "righttLevelLimit") != NULL)
+	if (Editor::GetAttribute(sceneNode, "rightLevelLimit") != NULL)
 		moveLevelLimit[2] = atoi(Editor::GetAttributeValue(sceneNode, "rightLevelLimit"));
 	else
 		moveLevelLimit[2] = Editor::width;

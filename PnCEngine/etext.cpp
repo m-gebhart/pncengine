@@ -29,6 +29,13 @@ void EText::SetSize(int newSize) {
 	text.setCharacterSize(size);
 }
 
+sf::Color EText::SetColor(std::vector<int> newColor) {
+	std::cout << newColor[0] << newColor[1] << newColor[2] << newColor[3];
+	sf::Color clr(newColor[0], newColor[1], newColor[2], newColor[3]);
+	color = clr;
+	return clr;
+}
+
 void EText::ApplyDefaultTextData(rapidxml::xml_node<>* textNode) {
 	font.loadFromFile(src);
 
@@ -41,6 +48,11 @@ void EText::ApplyDefaultTextData(rapidxml::xml_node<>* textNode) {
 		size = 15;
 	else
 		size = atoi(Editor::GetAttributeValue(textNode, "size"));
+
+	if (Editor::GetAttribute(textNode, "color") == NULL)
+		color = sf::Color(255, 255, 255, 255);
+	else
+		SetColor(Editor::GetAttributeVector4iValue(textNode, "color"));
 }
 
 void EText::UpdateTextData(rapidxml::xml_node<>* sceneTextNode) {
